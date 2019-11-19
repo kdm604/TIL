@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h2 class="text-center">영화 정보 조회</h2>
+<hr>
+<p>영화 제목: {{ movies.title }}</p>
+<p>영화 제목(영문): {{ movies.title_en }}</p>
+<p>누적 관객수: {{ movies.audience }}</p>
+<p>영화 개봉일: {{ movies.open_date }}</p>
+<p>영화 장르: {{ movies.genre }}</p>
+<p>관람 등급: {{ movies.watch_grade }}</p>
+<p>평점: {{ movies.score }}</p>
+<p>포스터 이미지: {{ movies.poster_url }}</p>
+<p>영화 소개: {{ movies.desription }}</p>
+
+
+
+<a href="{% url 'movies:index' %}">[목록]</a> <br>
+<a href="{% url 'movies:edit' movies.pk %}">[수정]</a><br>
+<a href="{% url 'movies:delete' movies.pk %}">[삭제]</a><br>
+{% endblock %}
+

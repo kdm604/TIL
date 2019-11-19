@@ -1,0 +1,43 @@
+{% extends 'movies/base.html' %}
+
+{% block b %}
+    <h1 class="text-center">영화 정보조회</h1>
+    <p>영화 제목: {{ movie.title }}</p>
+    <p>영화 제목(영문): {{ movie.title_en }}</p>
+    <p>누적 관객수 : {{ movie.audience }}</p>
+    <p>영화 개봉일: {{ movie.open_date }}</p>
+    <p>영화 장르: {{ movie.genre }}</p>
+    <p>영화 관람등급: {{ movie.watch_grade }}</p>
+    <p>영화 평점: {{ movie.score }}</p>
+    <p>영화 포스터: {{movie.poster_url }}</p>
+    <p>영화 소개: {{ movie.description }}</p>
+    <hr>
+
+
+    {% for comment in comments %}
+        <p>평점: {{ comment.score }} 한줄평: {{ comment.content }}</p>
+        <hr>
+    {% endfor %}
+        
+    <form action="{% url 'movies:comments_create' movie.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="댓글 작성" class="btn btn-primary">
+    </form>
+    
+    <form action="{% url 'movies:update' movie.pk %}" method="GET">
+        <input type="submit" value="글 수정" class="btn btn-dark">
+    </form>
+    
+
+    <form action="{% url 'movies:delete' movie.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="글 삭제" class="btn btn-danger">
+    </form>
+
+    <form action="{% url 'movies:index' %}" method="GET">
+            <input type="submit" value="메인페이지" class="btn btn-primary">
+    </form>
+
+    
+{% endblock %}

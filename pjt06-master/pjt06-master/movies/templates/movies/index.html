@@ -1,0 +1,21 @@
+{% extends 'movies/base.html' %}
+{% load static %}
+
+
+{% block b %}
+
+    <h1 class="text-center">영화 목록</h1>
+    <img src="{% static '컨져링.jpg'%}" alt="컨져링"><br>
+    <hr>
+    <form action="{% url 'movies:create' %}" method="GET">
+            <input type="submit" value="글 생성" class="btn btn-primary">
+    </form>
+    <hr>
+    {% for movie in movies %}
+        <a href="{% url 'movies:detail' movie.pk %}"><p>영화 제목: {{ movie.title }}</p></a>
+        
+        <p>영화 평점: {{ movie.score }}</p>
+        <hr>
+    {% endfor %}
+    
+{% endblock %}
