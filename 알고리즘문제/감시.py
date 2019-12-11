@@ -1,181 +1,58 @@
 import sys
-import copy
-sys.stdin = open("감시.txt")
+from collections import deque
 
-# cctv가 8개까지 8개의 cctv를 각자 4방향 돌린 모든방법중에 감시가 되는 최대 갯수 구하기
-# 1~5 는 cctv 6은 벽 // 1~4 까지의 cctv 방향을 다 돌려봐야됨. 5번은 4방향이라 항상 최대써치
-# cctv에 5번을 제외한 cctv를 넣고 순열로 1~4방향을 지정해서 써치범위 탐색
+# 지금 가지고있는 좌표의 값과 인구이동을 할때의 값이 달라진다면 인구이동.
 
 
-dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
 
 
-# cctv의 방향들의 순열을 만들어서 ans배열에 전부 저장
-def dfs():
-    if len(brr) == len(cctv):
-        tmp = ''
-        for i in range(len(cctv)):
-            tmp += str(brr[i]) + ' '
-        ans.append(list(map(int, tmp.split())))
-        return
+def move(x, y, s, cnt):
+    global flag
+    br = 0
+    Q = deque()
+    Q.append((x, y, s, cnt))
+    visited[x][y] = count
 
-    brr.append(1)
-    dfs()
-    brr.pop()
-    brr.append(2)
-    dfs()
-    brr.pop()
-    brr.append(3)
-    dfs()
-    brr.pop()
-    brr.append(4)
-    dfs()
-    brr.pop()
+    while len(Q):
+        x, y, s, cnt = Q.popleft()
+        for d in range(4):
+            nx = x + dx[d]
+            ny = y + dy[d]
+            if 0 <= nx < N and 0 <= ny < N:
+                if L <= abs(nxn[x][y] - nxn[nx][ny]) <= R and visited[nx][ny] != count and visited[nx][ny] != -1:
+                    visited[nx][ny] = -1
+                    br = 1
+                    Q.append((nx, ny, s + nxn[nx][ny], cnt + 1))
 
-N, M = map(int, input().split())
-brr = []
-nxm = [[0 for _ in range(M)] for _ in range(N)]
-ans = []
-answer = 98754321
-for z in range(N):
-    nxm[z] = list(map(int, input().split()))
-
-cctv = []
-cctv2 = []
-
-# 1~4 까지의 cctv들을 cctv배열에 저장 5번 cctv를 cctv2배열에 저장
-for x in range(N):
-    for y in range(M):
-        if 0 < nxm[x][y] <= 4:
-            cctv.append((x, y))
-        if nxm[x][y] == 5:
-            cctv2.append((x, y))
-dfs()
-
-nxm3 = [[0 for _ in range(M)] for _ in range(N)]
-for p in range(len(cctv2)):
-    for d in range(4):
-        for e in range(1, 9):
-            nx = cctv2[p][0] + dx[d] * e
-            ny = cctv2[p][1] + dy[d] * e
-
-            if 0 <= nx < N and 0 <= ny < M:
-                if nxm[nx][ny] == 6:
-                    break
-                else:
-                    nxm3[nx][ny] = 7
-            else:
-                break
-
-for z in range(len(ans)):
-    nxm2 = copy.deepcopy(nxm3)
-    for w in range(len(cctv)):
-        # 1번 cctv 일떄
-        if nxm[cctv[w][0]][cctv[w][1]] == 1:
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[ans[z][w] - 1] * e
-                ny = cctv[w][1] + dy[ans[z][w] - 1] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-        # 2번 cctv 일때
-        if nxm[cctv[w][0]][cctv[w][1]] == 2:
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[ans[z][w] - 1] * e
-                ny = cctv[w][1] + dy[ans[z][w] - 1] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[(ans[z][w] + 1) % 4] * e
-                ny = cctv[w][1] + dy[(ans[z][w] + 1) % 4] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-        # 3번 cctv 일때
-        if nxm[cctv[w][0]][cctv[w][1]] == 3:
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[ans[z][w] - 1] * e
-                ny = cctv[w][1] + dy[ans[z][w] - 1] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[(ans[z][w]) % 4] * e
-                ny = cctv[w][1] + dy[(ans[z][w]) % 4] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-
-        # 4번 cctv 일때
-        if nxm[cctv[w][0]][cctv[w][1]] == 4:
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[ans[z][w] - 1] * e
-                ny = cctv[w][1] + dy[ans[z][w] - 1] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[(ans[z][w]) % 4] * e
-                ny = cctv[w][1] + dy[(ans[z][w]) % 4] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-            for e in range(1, 9):
-                nx = cctv[w][0] + dx[(ans[z][w] + 1) % 4] * e
-                ny = cctv[w][1] + dy[(ans[z][w] + 1) % 4] * e
-                if 0 <= nx < N and 0 <= ny < M:
-                    if nxm[nx][ny] == 6:
-                        br = 1
-                        break
-                    nxm2[nx][ny] = 7
-                else:
-                    break
-
-
-        cnt = 0
+    if br == 1:
+        avg = s // cnt
         for i in range(N):
-            for j in range(M):
-                if nxm2[i][j] == 0 and nxm[i][j] == 0:
-                    cnt += 1
+            for j in range(N):
+                if visited[i][j] == count or visited[i][j] == -1:
+                    if nxn[i][j] != avg:
+                        flag = 1
+                    nxn[i][j] = avg
+                    visited[i][j] = 0
 
-    if answer > cnt:
-        answer = cnt
 
-print(answer)
+N, L, R = map(int, input().split())
+
+nxn = [list(map(int, input().split())) for _ in range(N)]
+count = 0
+ans = [0]
+flag = 1
+while flag == 1:
+    flag = 0
+    visited = [[0 for _ in range(N)] for _ in range(N)]
+    for x in range(N):
+        for y in range(N):
+            if visited[x][y] == 0:
+                count += 1
+                move(x, y, nxn[x][y], 1)
+
+    if flag == 1:
+        ans[0] += 1
+
+print(ans[0])
