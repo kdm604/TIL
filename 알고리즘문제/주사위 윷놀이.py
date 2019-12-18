@@ -45,8 +45,7 @@ def dfs():
                     mal[team[j]][1] = 3
                     mal[team[j]][0] = 0
 
-
-            if mal[team[j]][1] == 1:
+            elif mal[team[j]][1] == 1:
                 if mal[team[j]][0] >= 8:
                     score += way1[0]
                     player[team[j]] = pan1[0]
@@ -54,7 +53,7 @@ def dfs():
                     score += way1[mal[team[j]][0]]
                     player[team[j]] = pan1[mal[team[j]][0] + 1]
 
-            if mal[team[j]][1] == 2:
+            elif mal[team[j]][1] == 2:
                 if mal[team[j]][0] >= 7:
                     score += way2[0]
                     player[team[j]] = pan2[0]
@@ -62,7 +61,7 @@ def dfs():
                     score += way2[mal[team[j]][0]]
                     player[team[j]] = pan2[mal[team[j]][0] + 1]
 
-            if mal[team[j]][1] == 3:
+            elif mal[team[j]][1] == 3:
                 if mal[team[j]][0] >= 8:
                     score += way3[0]
                     player[team[j]] = pan3[0]
@@ -80,7 +79,6 @@ def dfs():
 
         if bb == 0 and score > ans[0]:
             ans[0] = score
-
 
         return
 
@@ -108,10 +106,10 @@ pan3 = [0, 15, 29, 30, 31, 24, 25, 26, 20]
 
 
 # 말들이 이동할 수 있는 경로들의 스코어들
-way = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40] # 0 ~ 19번
-way1 = [0, 13, 16, 19, 25, 30, 35, 40] # 4 20 21 22 23 24 25 19
-way2 = [0, 22, 24, 25, 30, 35, 40] # 9 26 27 23 24 25 19
-way3 = [0, 28, 27, 26, 25, 30, 35, 40] # 14 28 29 30 23 24 25 19
+way = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]
+way1 = [0, 13, 16, 19, 25, 30, 35, 40]
+way2 = [0, 22, 24, 25, 30, 35, 40]
+way3 = [0, 28, 27, 26, 25, 30, 35, 40]
 
 
 arr = list(map(int, input().split()))
