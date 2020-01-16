@@ -32,4 +32,5 @@ for i in range(1, N+1):
     if ans[i] < answer[0]:
         answer[0] = ans[i]
         answer[1] = i
+
 print(answer[1])

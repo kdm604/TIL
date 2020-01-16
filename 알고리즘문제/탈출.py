@@ -22,8 +22,6 @@ def bfs():
                     Q.append((nx, ny, c+1, a))
                     visited[nx][ny] = 1
 
-
-
             if 0 <= nx < R and 0 <= ny < C and nxm[nx][ny] == 'S':
                 if a == 1:
                     nxm[nx][ny] = '*'
