@@ -1,5 +1,6 @@
 import sys
 from collections import deque
+sys.stdin = open("파괴된 도시.txt")
 
 N, M = map(int, input().split())
 
@@ -12,7 +13,7 @@ for z in range(M):
 
 city = int(input())
 arr = list(map(int, input().split()))
-destroyed = []
+destroyed = set()
 ans = 0
 answer = []
 
@@ -30,15 +31,17 @@ while Q:
             tmp.append(y)
             if y not in arr:
                 br = 1
-
+                break
     if br == 0:
         ans += 1
         for i in tmp:
-            destroyed.append(i)
-        destroyed.append(x)
+            destroyed.add(i)
+        destroyed.add(x)
         answer.append(x)
 
-destroyed = set(destroyed)
+
+    if len(destroyed) == len(arr):
+        break
 
 
 if len(destroyed) == len(arr):
