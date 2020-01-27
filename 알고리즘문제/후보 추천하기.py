@@ -15,7 +15,6 @@ for z in range(student):
             pyo[arr[z]] += 1
         else:
             pic.append(arr[z])
-
     else:
         if arr[z] in pic:
             pyo[arr[z]] += 1
